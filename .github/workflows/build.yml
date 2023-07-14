@@ -28,7 +28,7 @@ jobs:
 
     - name: Generate JavaDocs
       run: mvn javadoc:javadoc
-      working-directory: JavaSE_Calculator
+      working-directory: ./Calculator
 
     - name: Archive JavaDocs
       uses: actions/upload-artifact@v2
