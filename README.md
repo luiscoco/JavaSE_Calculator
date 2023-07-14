@@ -156,66 +156,6 @@ This is the yml file ouput:
 
 ![github actions output](https://github.com/luiscoco/JavaSE_Calculator/assets/32194879/9dd1c976-7ccc-48f8-966c-34c60c9d80a1)
 
-## How to include Unit Testing in your Java application and Github actions workflow.
-
-To include JUnit testing in your Java application and in your GitHub Actions workflow, you will need to make the following modifications:
-
-Update your pom.xml file to include the JUnit dependency. Open the pom.xml file and add the following <dependency> section within the <dependencies> section:
-
-```xml
-
-<dependencies>
-    <!-- Other dependencies -->
-    <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.12</version>
-        <scope>test</scope>
-    </dependency>
-</dependencies>
-```
-
-This adds the JUnit dependency to your project and sets its scope to test, indicating that it is only required for testing purposes.
-
-Write JUnit tests for your application. Create a new Java class (e.g., CalculatorTest) in the same package as your application, and write test methods using JUnit annotations. Here's an example of a JUnit test class:
-
-```java
-import org.junit.Test;
-import static org.junit.Assert.*;
-
-public class CalculatorTest {
-    @Test
-    public void testAddition() {
-        Calculator calculator = new Calculator();
-        double result = calculator.add(2, 3);
-        assertEquals(5, result, 0);
-    }
-
-    @Test
-    public void testDivision() {
-        Calculator calculator = new Calculator();
-        double result = calculator.divide(10, 2);
-        assertEquals(5, result, 0);
-    }
-}
-```
-
-Make sure to import the necessary JUnit classes (Test and Assert) and use assertions to verify the expected results.
-
-Update your GitHub Actions workflow to run the JUnit tests. Open the build.yml file and add the following step after the Maven build step:
-
-```yaml
-- name: Run JUnit tests
-  run: mvn test
-```
-
-This step executes the mvn test command, which runs the JUnit tests defined in your project.
-
-Save the pom.xml and build.yml files, commit them to your GitHub repository, and re-run the GitHub Actions workflow. The Maven build process will now execute the JUnit tests as part of the workflow run.
-
-With these modifications, your application will include JUnit testing, and the GitHub Actions workflow will run the tests to ensure the correctness of your code.
-
-
 ## How to see the JavaDocs
 
 To view the JavaDocs generated with your build.yml file in GitHub Actions, you can upload the generated HTML files as artifacts. Here's how you can modify your build.yml file to accomplish this:
