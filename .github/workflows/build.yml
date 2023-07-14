@@ -20,6 +20,10 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: 11
+        distribution: 'adopt'
+        server-id: github
+        server-username: GITHUB_ACTOR
+        server-password: GITHUB_TOKEN
 
     - name: Use Node.js 16.x
       uses: actions/setup-node@v2
