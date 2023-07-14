@@ -39,6 +39,9 @@ jobs:
     - name: List files in docs directory
       run: ls ./docs
       
+    - name: List files in JavaDocs directory
+      run: ls ./target/site/apidocs
+      
     - name: Archive JavaDocs
       uses: actions/upload-artifact@v2
       with:
