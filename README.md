@@ -1,5 +1,7 @@
 # JavaSE_Calculator
 
+## Java application source code
+
 This is the Java application whole code (file calculator.java):
 
 ```java
@@ -49,7 +51,9 @@ public class Calculator {
 }
 ```
 
-To run this application we first compile the Java file for creating the class file:
+## How to run this application
+
+we first compile the Java file for creating the class file:
 
 ```
 javac Calculator.java
@@ -67,3 +71,88 @@ For example:
 ```
 java Calculator 5 + 3
 ```
+
+## How to setup the Github actions
+
+It is very important to structure the project folders following this schema:
+
+```
+JavaSE_Calculator/
+├── src/
+│   └── (source code files)
+└── pom.xml
+```
+
+Then we set the pom.xml file:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>calculator</artifactId>
+    <version>1.0.0</version>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <!-- Add any dependencies your application requires here -->
+    </dependencies>
+</project>
+```
+
+We also have to create a build.yml file. Inside the yml file we also create the Javadocs:
+
+```yml
+name: Java CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: 11
+        distribution: 'adopt'
+        server-id: github
+        server-username: GITHUB_ACTOR
+        server-password: GITHUB_TOKEN
+
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16
+
+    - name: Build with Maven
+      run: mvn package
+
+    - name: Generate JavaDocs
+      run: mvn javadoc:javadoc
+
+    - name: Run tests
+      run: mvn test
+```
+
+This is the yml file ouput:
+
+![github actions output](https://github.com/luiscoco/JavaSE_Calculator/assets/32194879/9dd1c976-7ccc-48f8-966c-34c60c9d80a1)
+
