@@ -36,6 +36,9 @@ jobs:
     - name: Generate JavaDocs
       run: mvn javadoc:javadoc
       
+    - name: List files in docs directory
+      run: ls ./docs
+      
     - name: Archive JavaDocs
       uses: actions/upload-artifact@v2
       with:
