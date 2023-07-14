@@ -1,5 +1,7 @@
 # JavaSE_Calculator
 
+## Java application source code
+
 This is the Java application whole code (file calculator.java):
 
 ```java
@@ -49,7 +51,9 @@ public class Calculator {
 }
 ```
 
-To run this application we first compile the Java file for creating the class file:
+## How to run this application
+
+we first compile the Java file for creating the class file:
 
 ```
 javac Calculator.java
@@ -67,3 +71,146 @@ For example:
 ```
 java Calculator 5 + 3
 ```
+
+## How to setup the Github actions
+
+It is very important to structure the project folders following this schema:
+
+```
+JavaSE_Calculator/
+├── src/
+│   └── (source code files)
+└── pom.xml
+```
+
+Then we set the pom.xml file:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>calculator</artifactId>
+    <version>1.0.0</version>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <!-- Add any dependencies your application requires here -->
+    </dependencies>
+</project>
+```
+
+We also have to create a build.yml file. Inside the yml file we also create the Javadocs:
+
+```yml
+name: Java CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: 11
+        distribution: 'adopt'
+        server-id: github
+        server-username: GITHUB_ACTOR
+        server-password: GITHUB_TOKEN
+
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16
+
+    - name: Build with Maven
+      run: mvn package
+
+    - name: Generate JavaDocs
+      run: mvn javadoc:javadoc
+
+    - name: Run tests
+      run: mvn test
+```
+
+This is the yml file ouput:
+
+![github actions output](https://github.com/luiscoco/JavaSE_Calculator/assets/32194879/9dd1c976-7ccc-48f8-966c-34c60c9d80a1)
+
+## How to see the JavaDocs
+
+To view the JavaDocs generated with your build.yml file in GitHub Actions, you can upload the generated HTML files as artifacts. Here's how you can modify your build.yml file to accomplish this:
+
+```yaml
+name: Java CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: 11
+        distribution: 'adopt'
+        server-id: github
+        server-username: GITHUB_ACTOR
+        server-password: GITHUB_TOKEN
+
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16
+
+    - name: Build with Maven
+      run: mvn package
+
+    - name: Generate JavaDocs
+      run: mvn javadoc:javadoc
+
+    - name: Archive JavaDocs
+      uses: actions/upload-artifact@v2
+      with:
+        name: JavaDocs
+        path: target/site/apidocs
+
+    - name: Run tests
+      run: mvn test
+```
+
+In the updated configuration, we added a new step named "Archive JavaDocs" after generating the JavaDocs. This step uses the actions/upload-artifact@v2 action to upload the JavaDocs as an artifact. The JavaDocs are typically generated in the target/site/apidocs directory by default when using Maven.
+
+After making these changes, save the build.yml file, commit it to your GitHub repository, and re-run the workflow. Once the workflow completes, you can navigate to the "Actions" tab on your repository in GitHub. Find the completed workflow run and click on it. Under the "Artifacts" section, you should see a link to download the JavaDocs artifact. Click on the link to access and view the generated JavaDocs in HTML format.
+
+By uploading the JavaDocs as an artifact, you can easily access and share them with others, providing documentation for your Java application.
