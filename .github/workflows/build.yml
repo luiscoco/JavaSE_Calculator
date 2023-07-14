@@ -14,27 +14,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
     - name: Set up JDK 11
       uses: actions/setup-java@v2
       with:
         java-version: 11
         distribution: 'adopt'
+        server-id: github
+        server-username: GITHUB_ACTOR
+        server-password: GITHUB_TOKEN
+
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16
 
     - name: Build with Maven
       run: mvn package
 
     - name: Generate JavaDocs
       run: mvn javadoc:javadoc
-      working-directory: ./Calculator
-
-    - name: Archive JavaDocs
-      uses: actions/upload-artifact@v2
-      with:
-        name: JavaDocs
-        path: Calculator/docs
 
     - name: Run tests
       run: mvn test
