@@ -40,7 +40,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: JavaDocs
-        path: target/site/apidocs
+        path: ./docs
 
     - name: Run tests
       run: mvn test
